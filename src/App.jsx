@@ -1,14 +1,22 @@
-import React, { Component } from 'react';
+import React from 'react';
+import { Provider } from 'react-redux';
+
 import Main from './components/main';
+import configureStore from './redux/create-store';
+
 import './App.css';
 
+const store = configureStore();
+store.subscribe(() => console.log('subscribe', store.getState()));
 
-class App extends Component {
-  render() {
+const App = () => {
     return (
-      <Main/>
+      <Provider
+        store={store}
+      >
+        <Main/>
+      </Provider>
     );
-  }
 }
 
 export default App;

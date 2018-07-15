@@ -13,12 +13,14 @@ const ActionCreators = {
       payload: { hasError },
     };
   },
+
   loadingState: ({ isLoading, actionPrefix }) => {
     return {
       type: createActionType(actionPrefix, Actions.IS_LOADING),
       payload: { isLoading },
     };
   },
+
   fetchedSuccess: ({ data, actionPrefix }) => {
     return {
       type: createActionType(actionPrefix, Actions.FETCH_DATA_SUCCESS),

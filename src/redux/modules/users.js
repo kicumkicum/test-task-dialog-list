@@ -2,12 +2,12 @@ import { handleActions } from 'redux-actions';
 
 import {
   Actions as RequestActions,
-  fetchDataSuccess,
-  setErrorState,
+  fetchedSuccess,
+  errorState,
   loadingState,
-  request,
 } from './request';
 
+const request = (...args) => console.log('request', ...args) || Promise.resolve({data: [1, 2]});
 const STORE_KEY = 'USERS';
 
 const Actions = {
@@ -20,15 +20,21 @@ const initialState = {
   users: [],
 };
 
+const Selectors = {
+  users: (state) => state[STORE_KEY].users,
+};
+
 const reducer = handleActions({
   [Actions.USERS_HAS_ERRORED]: (state, { payload: { hasError } }) => ({
     ...state,
     hasError,
   }),
+
   [Actions.USERS_IS_LOADING]: (state, { payload: { isLoading } }) => ({
     ...state,
     isLoading,
   }),
+
   [Actions.USERS_FETCH_DATA_SUCCESS]: (state, { payload: { users } }) => ({
     ...state,
     users,
@@ -47,10 +53,10 @@ const ActionCreators = {
         dispatch(loadingState({ isLoading: false, actionPrefix }));
 
         const users = response.data;
-        dispatch(fetchDataSuccess({ data: { users }, actionPrefix }));
+        dispatch(fetchedSuccess({ data: { users }, actionPrefix }));
       })
       .catch((error) => {
-        dispatch(setErrorState({ hasError: true, actionPrefix}));
+        dispatch(errorState({ hasError: true, actionPrefix}));
 
         throw error;
       });
@@ -61,6 +67,14 @@ const {
   fetchAllUsers,
 } = ActionCreators;
 
+const {
+  users: selectUsers,
+} = Selectors;
+
 export {
+  STORE_KEY,
+  reducer,
+
   fetchAllUsers,
+  selectUsers,
 }
