@@ -1,0 +1,17 @@
+.virtualScroll {}
+
+.dataContainer {
+  overflow: auto;
+  position: relative;
+  padding: 0;
+  border: 1px solid black;
+  overflow-scrolling: auto;
+}
+
+
+.scrollContainer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 1px;
+}
