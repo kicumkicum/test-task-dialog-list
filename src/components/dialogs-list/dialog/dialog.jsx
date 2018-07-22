@@ -29,7 +29,11 @@ const Dialog = (props) => {
         </div>
         <div className={styles.content}>
           <div className={styles.message}>{lastMessage}</div>
-          <div className={styles.count}>{nonReadMessagesCount}</div>
+          {
+            nonReadMessagesCount ?
+              <div className={styles.count}>{nonReadMessagesCount}</div> :
+              null
+          }
         </div>
       </div>
     </li>

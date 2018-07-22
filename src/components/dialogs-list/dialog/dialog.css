@@ -1,5 +1,5 @@
 .dialog {
-  width: 300px;
+  width: 450px;
   height: 65px;
   background-color: rgba(60, 180, 90, 1);
 }
@@ -9,17 +9,20 @@
 }
 
 .dialog .head {
+  position: relative;
+  top: 5px;
   height: 30px;
 }
 
 .dialog .content {
   height: 30px;
+  margin-left: 5px;
 }
 
 .dialog .name {
   color: black;
   float: left;
-  margin-left: 10px;
+  margin-left: 5px;
 }
 
 .dialog .date {
@@ -29,9 +32,14 @@
 }
 
 .dialog .message {
-  height: 30px;
+  height: 15px;
+  width: 80%;
+  margin-top: 5px;
+  overflow: hidden;
   color: gray;
   float: left;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 
 .dialog .count {
