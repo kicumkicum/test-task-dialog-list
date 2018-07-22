@@ -3,12 +3,12 @@ import { handleActions } from 'redux-actions';
 import {
   Actions as RequestActions,
   fetchedSuccess,
-  errorState,
-  loadingState,
+  request,
 } from './request';
 
-const request = (...args) => console.log('request', ...args) || Promise.resolve({data: [1, 2]});
+
 const STORE_KEY = 'USERS';
+
 
 const Actions = {
   USERS_HAS_ERRORED: `${STORE_KEY}_${RequestActions.HAS_ERRORED}`,
@@ -16,13 +16,16 @@ const Actions = {
   USERS_FETCH_DATA_SUCCESS: `${STORE_KEY}_${RequestActions.FETCH_DATA_SUCCESS}`,
 };
 
+
 const initialState = {
   users: [],
 };
 
+
 const Selectors = {
   users: (state) => state[STORE_KEY].users,
 };
+
 
 const reducer = handleActions({
   [Actions.USERS_HAS_ERRORED]: (state, { payload: { hasError } }) => ({
@@ -41,27 +44,25 @@ const reducer = handleActions({
   }),
 }, initialState);
 
+
+const actionPrefix = STORE_KEY;
+
 const ActionCreators = {
   fetchAllUsers: () => (dispatch) => {
-    const url = '';
-    const actionPrefix = STORE_KEY;
+    const url = 'users';
 
-    dispatch(loadingState({ isLoading: true, actionPrefix }));
-
-    return request(url)
+    return request({ url, actionPrefix, dispatch })
       .then((response) => {
-        dispatch(loadingState({ isLoading: false, actionPrefix }));
 
         const users = response.data;
         dispatch(fetchedSuccess({ data: { users }, actionPrefix }));
       })
       .catch((error) => {
-        dispatch(errorState({ hasError: true, actionPrefix}));
-
         throw error;
       });
   },
 };
+
 
 const {
   fetchAllUsers,
