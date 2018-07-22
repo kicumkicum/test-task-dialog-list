@@ -8,25 +8,26 @@ import styles from './dialogs-list.css';
 
 const ITEM_HEIGHT = 65;
 
-const renderDialog = (user, i) => {
+const renderDialog = (dialog) => {
+  const { id, user, messages, nonReadMessagesCount } = dialog;
+  const lastMessage = messages[messages.length - 1];
+
   return (
-    // TODO: Use real data
     <Dialog
-      key={user}
-      userName={user}
-      lastMessage={`Message ${user}`}
-      lastMessageDate={new Date()}
-      nonReadMessagesCount={128}
+      key={id}
+      userName={user.name}
+      lastMessage={lastMessage.text}
+      lastMessageDate={lastMessage.sendDate}
+      nonReadMessagesCount={nonReadMessagesCount}
       onClick={console.log}
     />
   );
 };
 
 const DialogsList = (props) => {
-  const { users, viewItemsCount, bufferSize } = props;
+  const { dialogs, viewItemsCount, bufferSize } = props;
 
-
-  if (!users || !users.length) {
+  if (!dialogs || !dialogs.length) {
     return (<div>Dialogs is empty</div>);
   }
 
@@ -37,7 +38,7 @@ const DialogsList = (props) => {
         viewItemsCount={viewItemsCount}
         bufferSize={bufferSize}
       >
-        {users.map(renderDialog)}
+        {dialogs.map(renderDialog)}
       </VirtualScroll>
     </ul>
   );
@@ -46,6 +47,7 @@ const DialogsList = (props) => {
 DialogsList.propTypes = {
   viewItemsCount: PropTypes.number.isRequired,
   bufferSize: PropTypes.number.isRequired,
+  dialogs: PropTypes.array,
 };
 
 export default DialogsList;
