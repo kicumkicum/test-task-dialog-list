@@ -12,6 +12,7 @@ import {
 } from '../redux/modules/users';
 import {
   fetchDialogs,
+  markAsRead,
   selectDialogs,
 } from '../redux/modules/dialogs';
 
@@ -23,6 +24,7 @@ const mapStateToProps = createStructuredSelector({
 const mapDispatchToProps = {
   fetchAllUsers,
   fetchDialogs,
+  markAsRead,
 };
 
 const DIALOGS_BUFFER_SIZE = 100;
@@ -47,8 +49,8 @@ class Main extends Component {
       <div>
         <DevInstruments/>
         <WrappedDialogsList
-          users
           onClick
+          onItemClick
           onMessage
         />
       </div>
