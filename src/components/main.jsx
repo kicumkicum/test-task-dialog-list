@@ -14,11 +14,13 @@ import {
   fetchDialogs,
   markAsRead,
   selectDialogs,
+  selectDialogsByIds,
 } from '../redux/modules/dialogs';
 
 const mapStateToProps = createStructuredSelector({
   users: selectUsers,
   dialogs: selectDialogs,
+  dialogsByIds: selectDialogsByIds,
 });
 
 const mapDispatchToProps = {

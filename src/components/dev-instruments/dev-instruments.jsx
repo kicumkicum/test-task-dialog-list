@@ -1,13 +1,38 @@
 import React from 'react';
-import Button from '../button/button.jsx';
+import { connect } from 'react-redux';
 
-const DevInstruments = () => (
+import Button from '../button/button.jsx';
+import {
+  newMessageFromNewUser,
+  newMessageFromOther,
+  newMessageFromTen
+} from '../../lib/stub-transport-request';
+
+
+const DevInstruments = (props) => (
   <div>
-    <Button message={'Msg from new user'} onClick={() => console.log('button pressed', 1)} className={''}/>
-    <Button message={'Msg from first 10'} onClick={() => console.log('button pressed', 2)} className={''}/>
-    <Button message={'Msg from another'} onClick={() => console.log('button pressed', 3)} className={''}/>
+    <Button
+      message={'Msg from new user'}
+      onClick={props.newMessageFromNewUser}
+      className={''}
+    />
+    <Button
+      message={'Msg from first 10'}
+      onClick={props.newMessageFromTen}
+      className={''}
+    />
+    <Button
+      message={'Msg from another'}
+      onClick={props.newMessageFromOther}
+      className={''}
+    />
   </div>
 );
 
+const mapDispatchToProps = {
+  newMessageFromNewUser,
+  newMessageFromOther,
+  newMessageFromTen
+};
 
-export default DevInstruments;
+export default connect(null, mapDispatchToProps)(DevInstruments);
