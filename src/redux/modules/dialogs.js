@@ -81,14 +81,7 @@ const reducer = handleActions({
     };
   },
 
-  // TODO: имплементнуть поведение кнопок.
-  // TODO: Баг: не всегда подгружаются данные при скролинге вниз
   [Actions.DEBUG_NEW_MESSAGE_OLD_USER]: (state, { payload: { dialog, message } }) => {
-    if (!dialog) {
-      fetchDialogs({ from: 0, to: 1 });
-      return state;
-    }
-
     const newMessages = [message].concat(dialog.messages);
     const dialogsByIds = {
       ...state.dialogsByIds,
@@ -114,6 +107,34 @@ const reducer = handleActions({
       }
     };
   },
+
+  [Actions.DEBUG_NEW_MESSAGE_NEW_USER]: (state, { payload: { dialog, message } }) => {
+    const newMessages = [message].concat(dialog.messages);
+    const dialogsByIds = {
+      ...state.dialogsByIds,
+      [dialog.id]: {
+        ...dialog,
+        nonReadMessagesCount: dialog.nonReadMessagesCount + 1,
+        messages: newMessages,
+      },
+    };
+
+    const dialogs = [...state.dialogs];
+    const dialogIndex = dialogs.findIndex((dialogId) => dialogId === dialog.id);
+    dialogs.splice(dialogIndex, 1);
+    dialogs.unshift(dialog.id);
+
+    return {
+      ...state,
+      dialogsByIds,
+      dialogs,
+      messagesByDialogId: {
+        ...state.messagesByDialogId,
+        [dialog.id]: newMessages,
+      }
+    };
+  },
+
 }, initialState);
 
 

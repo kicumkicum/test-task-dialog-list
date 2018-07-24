@@ -28,6 +28,33 @@ let dialogs = users.map((user, i) => {
   };
 }).sort((a, b) => b.messages[0].sendDate - a.messages[0].sendDate);
 
+const generateNewUser = () => {
+  const lastUser = users[users.length - 1];
+  const randomUser = users[randomInteger(0, users.length - 1)];
+  return {
+    id: lastUser.id + 1,
+    name: 'new ' + randomUser.name,
+  };
+};
+
+const generateNewDialog = ({ user }) => {
+  return {
+    id: `dialog-${user.id}`,
+    messages: [],
+    user,
+    nonReadMessagesCount: 0,
+  };
+};
+
+const generateNewMessage = ({ dialogId }) => {
+  return {
+    dialogId,
+    id: messages.length,
+    text: 'New Message ' + messages[randomInteger(0, messages.length - 1)].text,
+    isRead: false,
+    sendDate: new Date(),
+  };
+};
 
 const markAsRead = ({ message }) => {
   let result = null;
@@ -81,6 +108,8 @@ const newMessage = ({ from, to} ) => (dispatch) => {
     isRead: false
   };
 
+  console.info('incoming new message', { newMessage, from: dialogIndex });
+
   dialog.messages = [newMessage].concat(dialog.messages);
   dialogs = dialogs.sort((a, b) => b.messages[0].sendDate - a.messages[0].sendDate)
 
@@ -93,17 +122,35 @@ const newMessage = ({ from, to} ) => (dispatch) => {
   });
 };
 
+const _newMessageFromNewUser = () => (dispatch) => {
+  const newUser = generateNewUser();
+  users.push(newUser);
+
+  const newDialog = generateNewDialog({ user: newUser });
+
+  const newMessage = generateNewMessage({ dialogId: newDialog.id });
+  messages.unshift(newMessage);
+
+  newDialog.messages = [newMessage];
+  newDialog.nonReadMessagesCount = randomInteger(0, 5);
+
+  console.info('incoming new message from new user', { newMessage, newUser, newDialog });
+
+  dialogs.unshift(newDialog);
+
+  dispatch({
+    type: 'DEBUG_NEW_MESSAGE_NEW_USER',
+    payload: {
+      dialog: newDialog,
+      message: newMessage,
+    }
+  });
+};
+
 const stubTransportIncoming = {
   newMessageFromTen: () => newMessage({ from: 0, to: 9 }),
   newMessageFromOther: () => newMessage({ from: 0, to: dialogs.length - 1 }),
-  // TODO: implement
-  newMessageFromNewUser: () => (dispatch) => {
-    dispatch({
-      // user,
-      // dialogId,
-      // message,
-    });
-  },
+  newMessageFromNewUser: _newMessageFromNewUser,
 };
 
 const {
