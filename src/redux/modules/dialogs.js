@@ -16,8 +16,7 @@ const Actions = {
   DIALOGS_FETCH_DATA_SUCCESS: `${STORE_KEY}_${RequestActions.FETCH_DATA_SUCCESS}`,
   DIALOG_MARK_AS_READ: 'DIALOG_MARK_AS_READ',
   DEBUG_NEW_MESSAGE_NEW_USER: 'DEBUG_NEW_MESSAGE_NEW_USER',
-  DEBUG_NEW_MESSAGE_LAST_TEN: 'DEBUG_NEW_MESSAGE_LAST_TEN',
-  DEBUG_NEW_MESSAGE_OTHER_USER: 'DEBUG_NEW_MESSAGE_OTHER_USER',
+  DEBUG_NEW_MESSAGE_OLD_USER: 'DEBUG_NEW_MESSAGE_OLD_USER',
 };
 
 
@@ -84,23 +83,26 @@ const reducer = handleActions({
 
   // TODO: имплементнуть поведение кнопок.
   // TODO: Баг: не всегда подгружаются данные при скролинге вниз
-    [Actions.DEBUG_NEW_MESSAGE_LAST_TEN]: (state, { payload: { dialogId, message } }) => {
-    const targetDialog = state.dialogsByIds[dialogId];
-    const newMessages = [message].concat(targetDialog.messages);
+  [Actions.DEBUG_NEW_MESSAGE_OLD_USER]: (state, { payload: { dialog, message } }) => {
+    if (!dialog) {
+      fetchDialogs({ from: 0, to: 1 });
+      return state;
+    }
 
+    const newMessages = [message].concat(dialog.messages);
     const dialogsByIds = {
       ...state.dialogsByIds,
-      [dialogId]: {
-        ...targetDialog,
-        nonReadMessagesCount: targetDialog.nonReadMessagesCount + 1,
+      [dialog.id]: {
+        ...dialog,
+        nonReadMessagesCount: dialog.nonReadMessagesCount + 1,
         messages: newMessages,
       },
     };
 
     const dialogs = [...state.dialogs];
-    const dialogIndex = dialogs.indexOf(dialogId);
+    const dialogIndex = dialogs.findIndex((dialogId) => dialogId === dialog.id);
     dialogs.splice(dialogIndex, 1);
-    dialogs.unshift(dialogId);
+    dialogs.unshift(dialog.id);
 
     return {
       ...state,
@@ -108,7 +110,7 @@ const reducer = handleActions({
       dialogs,
       messagesByDialogId: {
         ...state.messagesByDialogId,
-        [dialogId]: newMessages,
+        [dialog.id]: newMessages,
       }
     };
   },

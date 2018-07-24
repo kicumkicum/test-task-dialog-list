@@ -85,9 +85,9 @@ const newMessage = ({ from, to} ) => (dispatch) => {
   dialogs = dialogs.sort((a, b) => b.messages[0].sendDate - a.messages[0].sendDate)
 
   dispatch({
-    type: 'DEBUG_NEW_MESSAGE_LAST_TEN',
+    type: 'DEBUG_NEW_MESSAGE_OLD_USER',
     payload: {
-      dialogId: dialog.id,
+      dialog: dialog,
       message: newMessage,
     }
   });
@@ -95,7 +95,7 @@ const newMessage = ({ from, to} ) => (dispatch) => {
 
 const stubTransportIncoming = {
   newMessageFromTen: () => newMessage({ from: 0, to: 9 }),
-  newMessageFromOther: () => newMessage({ from: 0, to: dialogs.length }),
+  newMessageFromOther: () => newMessage({ from: 0, to: dialogs.length - 1 }),
   // TODO: implement
   newMessageFromNewUser: () => (dispatch) => {
     dispatch({

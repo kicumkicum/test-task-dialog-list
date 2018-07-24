@@ -22,7 +22,7 @@ const DevInstruments = (props) => (
       className={''}
     />
     <Button
-      message={'Msg from another'}
+      message={'Msg from other'}
       onClick={props.newMessageFromOther}
       className={''}
     />
