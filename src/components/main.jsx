@@ -52,7 +52,6 @@ class Main extends Component {
         <DevInstruments/>
         <WrappedDialogsList
           onClick
-          onItemClick
           onMessage
         />
       </div>

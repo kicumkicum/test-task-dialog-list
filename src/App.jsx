@@ -7,7 +7,6 @@ import configureStore from './redux/create-store';
 import './App.css';
 
 const store = configureStore();
-store.subscribe(() => console.log('subscribe', store.getState()));
 
 const App = () => {
     return (

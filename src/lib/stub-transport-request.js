@@ -1,5 +1,4 @@
 import _messages from '../stubs/messages';
-import nemMessages from '../stubs/new-messages';
 import users from '../stubs/users';
 import { randomInteger } from './utils';
 
@@ -92,6 +91,9 @@ const stubTransportRequest = ({ url, params }) => {
       const message = messages.find((message) => message.id === id);
       const { dialog } = markAsRead({ message });
       data = { success: true, dialog };
+      break;
+    default:
+      break;
   }
 
   return send({ url, data });

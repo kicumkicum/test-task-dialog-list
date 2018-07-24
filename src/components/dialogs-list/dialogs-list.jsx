@@ -49,7 +49,6 @@ DialogsList.propTypes = {
   viewItemsCount: PropTypes.number.isRequired,
   bufferSize: PropTypes.number.isRequired,
   dialogs: PropTypes.array,
-  onItemClick: PropTypes.func.isRequired,
 };
 
 export default DialogsList;
