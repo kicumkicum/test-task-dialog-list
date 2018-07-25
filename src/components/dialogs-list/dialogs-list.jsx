@@ -32,7 +32,10 @@ const DialogsList = (props) => {
   }
 
   return (
-    <ul className={`${styles.dialogsList}`}>
+    <ul
+      className={`${styles.dialogsList}`}
+      // style={props.style}
+    >
       <VirtualScroll
         itemHeight={ITEM_HEIGHT}
         viewItemsCount={viewItemsCount}
@@ -42,6 +45,15 @@ const DialogsList = (props) => {
         {dialogs.map(renderDialog.bind(null, markAsRead))}
       </VirtualScroll>
     </ul>
+
+    // Use it with with-slide
+    // return (
+    // <ul
+    //   className={`${styles.dialogsList}`}
+    //   style={props.style}
+    // >
+    //   {dialogs.map(renderDialog.bind(null, markAsRead))}
+    // </ul>
   );
 };
 

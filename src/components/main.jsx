@@ -6,6 +6,7 @@ import { createStructuredSelector } from 'reselect';
 import DialogsList from './dialogs-list/dialogs-list';
 import DevInstruments from './dev-instruments/dev-instruments';
 import withDialogsLoad from '../hoc/with-dialogs-load'
+// import withSlide from '../hoc/with-slide';
 import {
   fetchAllUsers,
   selectUsers,
@@ -43,6 +44,8 @@ const WrappedDialogsList = compose(
     bufferSize: DIALOGS_BUFFER_SIZE,
     viewItemsCount: DIALOGS_VIEW_ITEMS_COUNT,
   })),
+  // withProps(() => ({ from: 0, to: 5 })),
+  // withSlide,
 )(DialogsList);
 
 class Main extends Component {
