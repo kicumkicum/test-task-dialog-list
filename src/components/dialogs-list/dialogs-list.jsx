@@ -14,7 +14,7 @@ const renderDialog = (markAsRead, dialog, i) => {
 
   return (
     <Dialog
-      key={id}
+      key={i}
       userName={`${id}: ${user.name}`}
       lastMessage={lastMessage.text}
       lastMessageDate={lastMessage.sendDate}

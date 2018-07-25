@@ -1,10 +1,12 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 
 import { throttle } from '../../lib/utils';
 import styles from './virtual-scroll.css';
 
-const VirtualScroll = class extends Component {
+const RENDER_PERIOD = 20;
+
+const VirtualScroll = class extends PureComponent {
   constructor(props, context) {
     super(props, context);
 
@@ -14,7 +16,16 @@ const VirtualScroll = class extends Component {
       scrollTopItems: 0,
     };
 
-    this.handleScroll = throttle(this.handleScroll, 100);
+    this.handleScroll = throttle(this.handleScroll, 1000 / 60);
+  }
+
+  handleWheel = (e) => {
+    const { viewItemsCount, children: items, bufferSize } = this.props;
+    const scrollTopItems = this.state.scrollTopItems;
+
+    if (scrollTopItems + viewItemsCount >= items.length - 5) {
+      this.props.onScrollInDown({ itemsLength: items.length, bufferSize });
+    }
   }
 
   handleScroll = (e) => {
@@ -38,8 +49,8 @@ const VirtualScroll = class extends Component {
   }
 
   renderItems({ items, startItem, finishItem }) {
-    const normalizedStartItem = startItem - startItem % 20;
-    const normalizedFinishItem = finishItem - finishItem % 20;
+    const normalizedStartItem = startItem - startItem % RENDER_PERIOD;
+    const normalizedFinishItem = finishItem - finishItem % RENDER_PERIOD;
 
     const slicedItems = items.slice(normalizedStartItem, normalizedFinishItem);
 
@@ -94,6 +105,7 @@ const VirtualScroll = class extends Component {
     viewItemsCount: PropTypes.number.isRequired,
     itemHeight: PropTypes.number.isRequired,
     bufferSize: PropTypes.number.isRequired,
+    onScrollInDown: PropTypes.func.isRequired,
   };
 };
 

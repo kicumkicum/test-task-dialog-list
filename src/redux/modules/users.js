@@ -49,7 +49,7 @@ const actionPrefix = STORE_KEY;
 
 const ActionCreators = {
   fetchAllUsers: () => (dispatch) => {
-    const url = 'users';
+    const url = 'users/';
 
     return request({ url, actionPrefix, dispatch })
       .then((response) => {

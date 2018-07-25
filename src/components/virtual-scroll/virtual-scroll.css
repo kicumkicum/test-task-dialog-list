@@ -1,6 +1,7 @@
 .virtualScroll {}
 
 .dataContainer {
+  width: 467px;
   overflow: auto;
   position: relative;
   padding: 0;
